@@ -40,16 +40,12 @@
 const axios = require('axios');
 
 const historydata = [];
-const hello = () => {
- historydata[0].map(function (price) {
+const mapDataHistory = () => {
+ historydata[0].map(function (item) {
+  console.log('mes items', item);
+  console.log('une seule date', item[0]);
+  console.log('un seul prix', item[1]);
 
-  // console.log(myArray);
-  console.log('mes prix cousin', price);
-  price.map(function (prix) {
-   console.log('jai dit juste le prix', prix);
-   // console.log('index 0', prix[0]);
-   // console.log('index 1', prix[1]);
-  })
  });
 }
 
@@ -64,9 +60,9 @@ axios.get(`${api_url}${coinId}/market_chart/range?vs_currency=${currency}&from=1
  .then(function (response) {
   // handle success
   console.log(response.data);
-  historydata.push(response.data.prices);
+  historydata = response.data.prices;
   console.log('mon tableau de data :', historydata);
-  hello();
+  mapDataHistory();
 
  })
  .catch(function (error) {
