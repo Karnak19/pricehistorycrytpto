@@ -40,14 +40,18 @@
 const axios = require('axios');
 
 const historydata = [];
-// const hello = () => {
-//  let myArray = historydata.prices.map(function (price) {
+const hello = () => {
+ historydata[0].map(function (price) {
 
-//   console.log(myArray);
-//   console.log(price[2]);
-//   return town[2];
-//  });
-// }
+  // console.log(myArray);
+  console.log('mes prix cousin', price);
+  price.map(function (prix) {
+   console.log('jai dit juste le prix', prix);
+   // console.log('index 0', prix[0]);
+   // console.log('index 1', prix[1]);
+  })
+ });
+}
 
 // Get historical market data include price, market cap, and 24h volume (granularity auto)
 const api_url = 'https://api.coingecko.com/api/v3/coins/'
@@ -62,6 +66,7 @@ axios.get(`${api_url}${coinId}/market_chart/range?vs_currency=${currency}&from=1
   console.log(response.data);
   historydata.push(response.data.prices);
   console.log('mon tableau de data :', historydata);
+  hello();
 
  })
  .catch(function (error) {
