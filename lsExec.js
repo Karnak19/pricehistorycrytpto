@@ -5,18 +5,31 @@ let newPortfolioAssets = [];
 let listCoins = [];
 let newListCoins = [];
 
+const shearchCoinId = () => {
+
+  newPortfolioAssets.map(element => element.asset).forEach(asset => {
+    const coin = newListCoins.find(coin => coin.coinsymbol === asset.toLowerCase());
+    if (!coin) {
+      throw new Error('coin not found');
+    }
+    const coinId = coin.coinid;
+
+    console.log('coinId', coinId);
+  })
+};
+
 const mapPortfolioAssets = () => {
   portfolioAssets.map((portfolioAsset) => {
     return newPortfolioAssets.push({ amount: portfolioAsset.amount, asset: portfolioAsset.asset.symbol })
   })
-  console.log('nouveauuuuu:', newPortfolioAssets);
+  console.log('new portfolio:', newPortfolioAssets);
 };
 
 const mapListCoins = () => {
   listCoins.map((coin) => {
-    return newListCoins.push({ coinid: coin.id, coinname: coin.name })
+    return newListCoins.push({ coinid: coin.id, coinsymbol: coin.symbol })
   });
-  console.log('new list coins:', newListCoins);
+  // console.log(newListCoins);
   // console.log('dans coinList:', newPortfolioAssets);
 };
 
@@ -53,102 +66,13 @@ Promise.all([
     // console.log('listCoins', resultAPIlistCoins);
     portfolioAssets = resultAPIportfolio.data.fund.portfolio.holdings;
     listCoins = resultAPIlistCoins;
-    mapPortfolioAssets();
     mapListCoins();
+    mapPortfolioAssets();
+    shearchCoinId();
   })
   .catch(error => {
     console.log(error);
   });
-
-// const fetch = require("node-fetch");
-
-// let portfolioName = [];
-// let portfolioAssets = [];
-// let newPortfolioAssets = [];
-
-
-
-// const mapPortfolioAssets = () => {
-//   // portfolioAssets.map(function (item) {
-//   // console.log('mes items', item);
-//   // console.log('amount by asset', item.amount);
-//   // console.log('symbol by asset', item.asset.symbol);
-
-//   // });
-//   // console.log('all assets of portfolio :', portfolioAssets);
-//   // console.log('new portfolio with only symbol :', newPortfolioAssets);
-//   portfolioAssets.map((portfolioAsset) => {
-//     return newPortfolioAssets.push({ amount: portfolioAsset.amount, asset: portfolioAsset.asset.symbol })
-//   })
-//   console.log('nouveauuuuu:', newPortfolioAssets);
-// };
-
-// fetch('https://api.thegraph.com/subgraphs/name/enzymefinance/enzyme', {
-//   method: 'POST',
-//   headers: { "Content-type": "application/json" },
-//   body: JSON.stringify({
-//     query: `
-//   query 
-//   {
-//     fund(id: "0xded69068a94776a23f5bdafc6b4c6894bc88e82c") {
-//   name
-//       portfolio{
-//         holdings{
-//           asset{
-//             name
-//             symbol
-//           }
-//         amount
-//         }
-//       }
-//       }
-//     }
-//   `
-//   })
-// })
-//   .then((res) => res.json())
-//   .then(function (result) {
-//     // handle result
-//     // console.log('log result: ', result.data.fund.portfolio.holdings);
-//     portfolioName = result.data.fund.name;
-//     portfolioAssets = result.data.fund.portfolio.holdings;
-//     // console.log('les assets du portfolio :', portfolioAssets);
-//     // console.log('le nom du portfolio :', portfolioName);
-//     mapPortfolioAssets();
-
-//   })
-
-
-// const axios = require('axios');
-
-// let listCoins = [];
-// let newListCoins = [];
-
-// const mapListCoins = () => {
-//   listCoins.map((coin) => {
-//     return newListCoins.push({ coinid: coin.id, coinname: coin.name })
-//   });
-//   console.log('new list coins:', newListCoins);
-//   console.log('dans coinList:', newPortfolioAssets);
-// };
-
-// // Get all coins of crypto market 
-// const api_url = 'https://api.coingecko.com/api/v3/coins/list?include_platform=false'
-
-// axios.get(`${api_url}`)
-//   .then(function (response) {
-//     // handle success
-//     listCoins = response.data;
-//     mapListCoins();
-//   })
-//   .catch(function (error) {
-//     // handle error
-//     console.log(error);
-//   });
-
-
-
-
 
 
 // const axios = require('axios');
