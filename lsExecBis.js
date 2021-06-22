@@ -4,8 +4,6 @@ let portfolioName = [];
 let portfolioAssets = [];
 let newPortfolioAssets = [];
 
-
-
 const mapPortfolioAssets = () => {
  // portfolioAssets.map(function (item) {
  // console.log('mes items', item);
