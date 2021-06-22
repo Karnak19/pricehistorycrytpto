@@ -4,6 +4,7 @@ let portfolioAssets = [];
 let newPortfolioAssets = [];
 let listCoins = [];
 let newListCoins = [];
+let listCoinsID = [];
 
 const shearchCoinId = () => {
 
@@ -13,9 +14,11 @@ const shearchCoinId = () => {
       throw new Error('coin not found');
     }
     const coinId = coin.coinid;
+    listCoinsID.push(coinId);
 
     console.log('coinId', coinId);
   })
+  console.log('list coinID', listCoinsID);
 };
 
 const mapPortfolioAssets = () => {
@@ -29,8 +32,6 @@ const mapListCoins = () => {
   listCoins.map((coin) => {
     return newListCoins.push({ coinid: coin.id, coinsymbol: coin.symbol })
   });
-  // console.log(newListCoins);
-  // console.log('dans coinList:', newPortfolioAssets);
 };
 
 Promise.all([
@@ -62,8 +63,6 @@ Promise.all([
   .then(async ([res1, res2]) => {
     resultAPIportfolio = await res1.json();
     resultAPIlistCoins = await res2.json();
-    // console.log('portfolioAssets', resultAPIportfolio.data.fund.portfolio.holdings);
-    // console.log('listCoins', resultAPIlistCoins);
     portfolioAssets = resultAPIportfolio.data.fund.portfolio.holdings;
     listCoins = resultAPIlistCoins;
     mapListCoins();
@@ -75,9 +74,11 @@ Promise.all([
   });
 
 
+
+
 // const axios = require('axios');
 
-// console.log('nouveauuuuu ligne 62:', newPortfolioAssets);
+// // console.log('nouveauuuuu ligne 62:', newPortfolioAssets);
 
 // let historydata = [];
 // const mapDataHistory = () => {
@@ -95,7 +96,7 @@ Promise.all([
 // const fromDate = '10.01.2020'
 // const toDate = ''
 
-// axios.get(`${api_url}${coinId}/market_chart/range?vs_currency=${currency}&from=1621602840&to=1624281240`)
+// fetch(`${api_url}${coinId}/market_chart/range?vs_currency=${currency}&from=1621602840&to=1624281240`)
 //   .then(function (response) {
 //     // handle success
 //     // console.log(response.data);
@@ -108,7 +109,5 @@ Promise.all([
 //     // handle error
 //     console.log(error);
 //   });
-
-//  https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=eur&from=1621602840&to=1624281240
 
 
