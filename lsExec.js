@@ -12,7 +12,7 @@ const mapPortfolioAssets = () => {
   portfolioAssets.map((portfolioAsset) => {
     return newPortfolioAssets.push({ amount: portfolioAsset.amount, asset: portfolioAsset.asset.symbol })
   })
-  console.log('new portfolio:', newPortfolioAssets);
+  // console.log('new portfolio:', newPortfolioAssets);
 };
 
 // we just reduce the original data here
@@ -33,9 +33,9 @@ const shearchCoinId = () => {
     //add asset
     listCoinsID.push({ id: coinId, asset: asset, performance: [] });
 
-    console.log('coinId', coinId);
+    // console.log('coinId', coinId);
   })
-  console.log('list coinID', listCoinsID);
+  // console.log('list coinID', listCoinsID);
 };
 
 const addAmouts = () => {
@@ -97,6 +97,17 @@ async function loopApiCall() {
 
   }
 
-  console.log('123', listCoinsID); // output you can see data file
+  listCoinsID.map((item) => {
+    console.log('performance ligne 101', item.performance)
+    // output is all performance by coinID
+    // [
+    //   [ 1621602934102, 33312.955160517115 ],
+    // ]
+    // [
+    //   [ 1621940770295, 0.8109041745811527 ],
+    // ]
+  });
+
+  // console.log('123', listCoinsID); // output you can see data file
 }
 
