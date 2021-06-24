@@ -11,78 +11,78 @@ let listCoinsID = [];
 
 // we just reduce the original data here
 const mapPortfolioAssets = () => {
- portfolioAssets.map((portfolioAsset) => {
-  return newPortfolioAssets.push({ amount: portfolioAsset.amount, asset: portfolioAsset.asset.symbol })
- })
- console.log('new portfolio:', newPortfolioAssets);
+  portfolioAssets.map((portfolioAsset) => {
+    return newPortfolioAssets.push({ amount: portfolioAsset.amount, asset: portfolioAsset.asset.symbol })
+  })
+  console.log('new portfolio:', newPortfolioAssets);
 };
 
 // we just reduce the original data here
 const mapListCoins = () => {
- listCoins.map((coin) => {
-  return newListCoins.push({ coinid: coin.id, coinsymbol: coin.symbol })
- });
+  listCoins.map((coin) => {
+    return newListCoins.push({ coinid: coin.id, coinsymbol: coin.symbol })
+  });
 };
 
 
 const shearchCoinId = () => {
 
- newPortfolioAssets.map(element => element.asset).forEach(asset => {
-  const coin = newListCoins.find(coin => coin.coinsymbol === asset.toLowerCase());
-  if (!coin) {
-   throw new Error('coin not found');
-  }
-  const coinId = coin.coinid;
+  newPortfolioAssets.map(element => element.asset).forEach(asset => {
+    const coin = newListCoins.find(coin => coin.coinsymbol === asset.toLowerCase());
+    if (!coin) {
+      throw new Error('coin not found');
+    }
+    const coinId = coin.coinid;
 
-  //add asset
-  listCoinsID.push({ id: coinId, asset: asset, performance: [] });
+    //add asset
+    listCoinsID.push({ id: coinId, asset: asset, performance: [] });
 
-  console.log('coinId', coinId);
- })
- console.log('list coinID', listCoinsID);
+    console.log('coinId', coinId);
+  })
+  console.log('list coinID', listCoinsID);
 };
 
 const addAmouts = () => {
- // newPortfolioAssets.map(element => element.amount).forEach(amount => {
- //   listCoinsID.push({ amount: amount });
- // })
- // console.log('ligne 34', listCoinsID);
- // for (i = 0; i < listCoinsID.length; i++) {
- //   // const mapListCoins = () => {
- //   // newPortfolioAssets.map((item) => {
- //   return listCoinsID[i].amount = newPortfolioAssets.amount;
+  // newPortfolioAssets.map(element => element.amount).forEach(amount => {
+  //   listCoinsID.push({ amount: amount });
+  // })
+  // console.log('ligne 34', listCoinsID);
+  // for (i = 0; i < listCoinsID.length; i++) {
+  //   // const mapListCoins = () => {
+  //   // newPortfolioAssets.map((item) => {
+  //   return listCoinsID[i].amount = newPortfolioAssets.amount;
 
- // });
- // }
- listCoinsID.map((item, index) => {
-  item[amount] = newPortfolioAssets[index].amount
- })
+  // });
+  // }
+  listCoinsID.map((item, index) => {
+    item[amount] = newPortfolioAssets[index].amount
+  })
 
 
- // newPortfolioAssets.map(element => element.amount).forEach(asset => {
- //   const coin = newListCoins.find(coin => coin.coinsymbol === asset.toLowerCase());
- //   if (!coin) {
- //     throw new Error('coin not found');
- //   }
- //   const coinId = coin.coinid;
+  // newPortfolioAssets.map(element => element.amount).forEach(asset => {
+  //   const coin = newListCoins.find(coin => coin.coinsymbol === asset.toLowerCase());
+  //   if (!coin) {
+  //     throw new Error('coin not found');
+  //   }
+  //   const coinId = coin.coinid;
 
- //   //add asset
- //   listCoinsID.push({ id: coinId, asset: asset, performance: [] });
+  //   //add asset
+  //   listCoinsID.push({ id: coinId, asset: asset, performance: [] });
 
- //   console.log('coinId', coinId);
- // })
- // console.log('list coinID', listCoinsID);
+  //   console.log('coinId', coinId);
+  // })
+  // console.log('list coinID', listCoinsID);
 
 }
 
 
 
 Promise.all([
- fetch('https://api.thegraph.com/subgraphs/name/enzymefinance/enzyme', {
-  method: 'POST',
-  headers: { "Content-type": "application/json" },
-  body: JSON.stringify({
-   query: `
+  fetch('https://api.thegraph.com/subgraphs/name/enzymefinance/enzyme', {
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({
+      query: `
   query 
   {
     fund(id: "0xded69068a94776a23f5bdafc6b4c6894bc88e82c") {
@@ -99,59 +99,59 @@ Promise.all([
       }
     }
   `
-  })
- }),
- fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=false')
+    })
+  }),
+  fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=false')
 ])
- .then(async ([res1, res2]) => {
-  resultAPIportfolio = await res1.json();
-  resultAPIlistCoins = await res2.json();
-  portfolioAssets = resultAPIportfolio.data.fund.portfolio.holdings;
-  listCoins = resultAPIlistCoins;
-  mapListCoins();
-  mapPortfolioAssets();
-  shearchCoinId();
- })
- .then(async () => {
-  loopApiCall();
- })
- .then(async () => {
-  addAmouts();
- })
- .catch(error => {
-  console.log(error);
- });
+  .then(async ([res1, res2]) => {
+    resultAPIportfolio = await res1.json();
+    resultAPIlistCoins = await res2.json();
+    portfolioAssets = resultAPIportfolio.data.fund.portfolio.holdings;
+    listCoins = resultAPIlistCoins;
+    mapListCoins();
+    mapPortfolioAssets();
+    shearchCoinId();
+  })
+  .then(async () => {
+    loopApiCall();
+  })
+  .then(async () => {
+    addAmouts();
+  })
+  .catch(error => {
+    console.log(error);
+  });
 
 async function loopApiCall() {
 
 
 
- for (i = 0; i < listCoinsID.length; i++) {
+  for (i = 0; i < listCoinsID.length; i++) {
 
-  let response = await axios.get(`https://api.coingecko.com/api/v3/coins/${listCoinsID[i].id}/market_chart/range?vs_currency=eur&from=1621602840&to=1624281240`)
+    let response = await axios.get(`https://api.coingecko.com/api/v3/coins/${listCoinsID[i].id}/market_chart/range?vs_currency=eur&from=1621602840&to=1624281240`)
 
-  listCoinsID[i].performance = response.data.prices;
+    listCoinsID[i].performance = response.data.prices;
 
-  // for (i = 0; i < listCoinsID.length; i++) {
-  //   // const mapListCoins = () => {
-  //   newPortfolioAssets.map((item) => {
-  //     return listCoinsID[i].amount = item.amount;
+    // for (i = 0; i < listCoinsID.length; i++) {
+    //   // const mapListCoins = () => {
+    //   newPortfolioAssets.map((item) => {
+    //     return listCoinsID[i].amount = item.amount;
 
-  //   });
-  //   // };
+    //   });
+    //   // };
 
-  //   // listCoinsID[i].amount = newPortfolioAssets.amount;
-  //   // console.log('104', newPortfolioAssets);
-  //   // console.log('92', listCoinsID[i].performance);
-  //   // listCoinsID[i].performance = response.data.prices;
-  //   console.log('100', listCoinsID);
-  // }
-  // console.log('118', newPortfolioAssets);
- }
- // console.log('103', listCoinsID);
+    //   // listCoinsID[i].amount = newPortfolioAssets.amount;
+    //   // console.log('104', newPortfolioAssets);
+    //   // console.log('92', listCoinsID[i].performance);
+    //   // listCoinsID[i].performance = response.data.prices;
+    //   console.log('100', listCoinsID);
+    // }
+    // console.log('118', newPortfolioAssets);
+  }
+  // console.log('103', listCoinsID);
 
 
- console.log('123', listCoinsID);
+  console.log('123', listCoinsID);
 
 }
 
@@ -159,6 +159,17 @@ let finalData = listCoinsID;
 console.log('finalData', finalData);
 
 
+
+17h39 24 juin
+
+listCoinsID.map((oneAssetWithAllData) => {
+  firstday = oneAssetWithAllData.performance;
+  console.log('just first day', firstday);
+  // oneAssetWithAllData.performance.map((OneArrayPerformance) => {
+  console.log('price of the asset on the first day', firstday.length);
+  priceFirstday.push(firstday[1]);
+
+});
 
 
 
