@@ -94,24 +94,53 @@ Promise.all([
 
 async function loopApiCall() {
 
-  for (i = 0; i < listCoinsID.length; i++) {
-    let response = await axios.get(`https://api.coingecko.com/api/v3/coins/${listCoinsID[i].id}/market_chart/range?vs_currency=eur&from=1593129600&to=1624665600`)
-    listCoinsID[i].performance = response.data.prices; // output of response.data.prices is [ 1621604475335, 0.8309792774569776 ],
-  }
+  const res = await Promise.all(
+    listCoinsID.map((coin) => {
+      // for each id of coin we get the data
+      return axios.get(
+        `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart/range?vs_currency=eur&from=1615507200&to=1624492800`
+      );
+    })
+  );
 
-  listCoinsID.map((oneAssetWithAllData) => {
-    firstday = oneAssetWithAllData.performance[0]; // here if we target index 0 we have the first day
-    // if we target index 1 we have the second day etc ... so we need to do a for loop like we do in line 100
-    console.log('just first day', firstday);
-    console.log('price of the asset on the first day of the wallet', firstday[1]);
-    priceFirstday.push(firstday[1]);
+
+  const prices = res.map((r) =>
+    // we change the shape of the data for  {timestamp, value }
+    r.data.prices.map(([timestamp, value]) => ({
+      timestamp,
+      value,
+    }))
+  );
+
+  console.log("Prices ligne 107", prices); // output all pastperformance of all coin in array 
+
+  const cumuledValuePerDay = {};
+
+  prices.forEach((coinPrices) => {
+    console.log('coinPrices', coinPrices); // output just one pastperformance of one coin 
+    coinPrices.forEach(({ timestamp, value }, i) => {
+      if (!cumuledValuePerDay.hasOwnProperty(timestamp)) {
+        cumuledValuePerDay[timestamp] = value;
+      } else {
+        cumuledValuePerDay[timestamp] += value;
+      }
+    });
   });
 
-  let sum = priceFirstday.reduce((a, b) => {
-    return a + b;
-  }, 0);
-
-  console.log('Total Asset price on Firstday', sum);
+  console.log(cumuledValuePerDay);
+  Object.entries(cumuledValuePerDay).forEach(([ts, val]) => {
+    console.log(`${new Date(+ts).toLocaleString("fr")} => ${val}`);
+  });
 }
 
 
+// prices.forEach((coinPrices, i) => {
+//   const { amount } = listCoinsID[i];
+//   coinPrices.forEach(({ timestamp, value }) => {
+//     if (!cumuledValuePerDay.hasOwnProperty(timestamp)) {
+//       cumuledValuePerDay[timestamp] = value * amount;
+//     } else {
+//       cumuledValuePerDay[timestamp] += value * amount;
+//     }
+//   });
+// });
