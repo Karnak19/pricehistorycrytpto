@@ -6,6 +6,9 @@ let newPortfolioAssets = [];
 let listCoins = [];
 let newListCoins = [];
 let listCoinsID = [];
+let pastPerformancestwo = [];
+let firstday = [];
+let priceFirstday = [];
 
 // we just reduce the original data here
 const mapPortfolioAssets = () => {
@@ -85,6 +88,9 @@ Promise.all([
   .then(async () => {
     addAmouts();
   })
+  // .then(async () => {
+  //   loopForFindFirstPrice();
+  // })
   .catch(error => {
     console.log(error);
   });
@@ -92,22 +98,33 @@ Promise.all([
 async function loopApiCall() {
 
   for (i = 0; i < listCoinsID.length; i++) {
-    let response = await axios.get(`https://api.coingecko.com/api/v3/coins/${listCoinsID[i].id}/market_chart/range?vs_currency=eur&from=1621602840&to=1624281240`)
+    let response = await axios.get(`https://api.coingecko.com/api/v3/coins/${listCoinsID[i].id}/market_chart/range?vs_currency=eur&from=1593129600&to=1624665600`)
     listCoinsID[i].performance = response.data.prices; // output of response.data.prices is [ 1621604475335, 0.8309792774569776 ],
-
   }
 
-  listCoinsID.map((item) => {
-    console.log('performance ligne 101', item.performance)
-    // output is all performance by coinID
-    // [
-    //   [ 1621602934102, 33312.955160517115 ],
-    // ]
-    // [
-    //   [ 1621940770295, 0.8109041745811527 ],
-    // ]
+
+  // pastPerformancestwo = listCoinsID;
+  // console.log('123', listCoinsID.performance);
+  listCoinsID.map((oneAssetWithAllData) => {
+    firstday = oneAssetWithAllData.performance[0];
+    console.log('just first day', firstday);
+    // oneAssetWithAllData.performance.map((OneArrayPerformance) => {
+    console.log('price of the asset on the first day', firstday[1]);
+    priceFirstday.push(firstday[1]);
+
   });
 
-  // console.log('123', listCoinsID); // output you can see data file
+  let sum = priceFirstday.reduce((a, b) => {
+    return a + b;
+  }, 0);
+
+  console.log('Total Asset price on Firstday', sum);
 }
+
+// async function loopForFindFirstPrice() {
+
+
+//   });
+// }
+
 
