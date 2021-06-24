@@ -88,9 +88,6 @@ Promise.all([
   .then(async () => {
     addAmouts();
   })
-  // .then(async () => {
-  //   loopForFindFirstPrice();
-  // })
   .catch(error => {
     console.log(error);
   });
@@ -102,17 +99,12 @@ async function loopApiCall() {
     listCoinsID[i].performance = response.data.prices; // output of response.data.prices is [ 1621604475335, 0.8309792774569776 ],
   }
 
-
-  // pastPerformancestwo = listCoinsID;
-  // console.log('123', listCoinsID.performance);
   listCoinsID.map((oneAssetWithAllData) => {
-    firstday = oneAssetWithAllData.performance[1]; // here if we target index 0 we have the first day
-    // if we target index 1 we have the second day etc ... so we need to do a for loop like we do in line 100 
+    firstday = oneAssetWithAllData.performance[0]; // here if we target index 0 we have the first day
+    // if we target index 1 we have the second day etc ... so we need to do a for loop like we do in line 100
     console.log('just first day', firstday);
-    // oneAssetWithAllData.performance.map((OneArrayPerformance) => {
-    console.log('price of the asset on the first day', firstday[1]);
+    console.log('price of the asset on the first day of the wallet', firstday[1]);
     priceFirstday.push(firstday[1]);
-
   });
 
   let sum = priceFirstday.reduce((a, b) => {
@@ -121,11 +113,5 @@ async function loopApiCall() {
 
   console.log('Total Asset price on Firstday', sum);
 }
-
-// async function loopForFindFirstPrice() {
-
-
-//   });
-// }
 
 
