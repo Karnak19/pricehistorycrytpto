@@ -1,5 +1,10 @@
 import axios from "axios";
-import { CoinListResponse, FundQueryResponse, LighterHold } from "./interfaces";
+import {
+  CoinID,
+  CoinListResponse,
+  FundQueryResponse,
+  LighterHold,
+} from "./interfaces";
 
 const fundQueryPromise = axios.post<FundQueryResponse>(
   "https://api.thegraph.com/subgraphs/name/enzymefinance/enzyme",
@@ -33,6 +38,7 @@ const coinListPromise = axios.get<CoinListResponse[]>(
 async function main() {
   // states
   const portfolioAssets: LighterHold[] = [];
+  const coinsID: CoinID[] = [];
 
   // getting initial states datas
   const [{ data: portfolio }, { data: coinsList }] = await Promise.all([
@@ -47,7 +53,13 @@ async function main() {
     });
   });
 
-  console.log(portfolioAssets);
+  portfolioAssets.forEach(({ asset }) => {
+    const coin = coinsList.find((c) => c.symbol === asset.toLowerCase());
+    if (!coin) return;
+
+    coinsID.push({ id: coin.id, asset: asset });
+  });
+  console.log({ portfolioAssets, coinsID });
 }
 
 main();

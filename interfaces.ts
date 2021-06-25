@@ -27,3 +27,8 @@ export interface CoinListResponse {
   symbol: string;
   name: string;
 }
+
+export interface CoinID {
+  id: string;
+  asset: string;
+}
