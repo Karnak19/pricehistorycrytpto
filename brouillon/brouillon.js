@@ -128,7 +128,7 @@ async function loopApiCall() {
 
   for (i = 0; i < listCoinsID.length; i++) {
 
-    let response = await axios.get(`https://api.coingecko.com/api/v3/coins/${listCoinsID[i].id}/market_chart/range?vs_currency=eur&from=1621602840&to=1624281240`)
+    let response = await axios.get(`https://api.coingecko.com/api/v3/coins/${listCoinsID[i].id}/market_chart/range?vs_currency=eur&from=1561370451&to=1624281240`)
 
     listCoinsID[i].performance = response.data.prices;
 
