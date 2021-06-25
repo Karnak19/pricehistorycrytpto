@@ -1,4 +1,4 @@
-interface Hold {
+export interface Hold {
   amount: string;
   asset: {
     name: string;
@@ -6,12 +6,12 @@ interface Hold {
   };
 }
 
-interface LighterHold {
+export interface LighterHold {
   amount: string;
   asset: Hold["asset"]["symbol"];
 }
 
-interface FundQueryResponse {
+export interface FundQueryResponse {
   data: {
     fund: {
       name: string;
@@ -22,7 +22,7 @@ interface FundQueryResponse {
   };
 }
 
-interface CoinListResponse {
+export interface CoinListResponse {
   id: string;
   symbol: string;
   name: string;

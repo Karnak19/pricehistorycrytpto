@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CoinListResponse, FundQueryResponse, LighterHold } from "./interfaces";
 
 const fundQueryPromise = axios.post<FundQueryResponse>(
   "https://api.thegraph.com/subgraphs/name/enzymefinance/enzyme",
@@ -45,6 +46,8 @@ async function main() {
       asset: hold.asset.symbol,
     });
   });
+
+  console.log(portfolioAssets);
 }
 
 main();
